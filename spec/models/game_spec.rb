@@ -39,4 +39,28 @@ RSpec.describe Game, type: :model do
       expect(game.save).to be true
     end
   end
+
+  context "with lives = 0" do
+    it "does not save the game" do
+      word = 'a' * 10
+      game = Game.new word: word, lives: 0
+      expect(game.save).to be false
+    end
+  end
+
+  context "with lives > 10" do
+    it "does not save the game" do
+      word = 'a' * 10
+      game = Game.new word: word, lives: 11
+      expect(game.save).to be false
+    end
+  end
+
+  context "with lives in range 1..10" do
+    it "saves the game" do
+      word = 'a' * 10
+      game = Game.new word: word, lives: 7
+      expect(game.save).to be true
+    end
+  end
 end
