@@ -63,4 +63,42 @@ RSpec.describe Game, type: :model do
       expect(game.save).to be true
     end
   end
+
+  let(:game) { Game.new word: 'foo', lives: 5 }
+
+  context "with guesses not present on update" do
+    it "does not update the game" do
+      game.save
+      expect(game.update(guesses: '')).to be false
+    end
+  end
+
+  context "with guesses of more than one letter on update" do
+    it "does not update the game" do
+      game.save
+      expect(game.update(guesses: 'aaa')).to be false
+    end
+  end
+
+  context "with number submitted to guesses on update" do
+    it "does not update the game" do
+      game.save
+      expect(game.update(guesses: 1)).to be false
+    end
+  end
+
+  context "with symbol submitted to guesses on update" do
+    it "does not update the game" do
+      game.save
+      expect(game.update(guesses: '!')).to be false
+    end
+  end
+
+  context "with single letter submitted to guesses on update" do
+    it "updates the game" do
+      game.save
+      expect(game.update(guesses: 'a')).to be true
+      expect(game.guesses).to eq 'a'
+    end
+  end
 end
