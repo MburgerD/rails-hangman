@@ -4,7 +4,7 @@ RSpec.describe "games/show", type: :view do
   before(:each) do
     @game = assign(:game, Game.create!(
                             :word => "Word",
-                            :guesses => "",
+                            :guesses => "abc",
                             :lives => 2
     ))
   end
@@ -12,7 +12,7 @@ RSpec.describe "games/show", type: :view do
   it "renders attributes in <p>" do
     render
     expect(rendered).to match(/Word/)
-    expect(rendered).to match(//)
+    expect(rendered).to match(/abc/)
     expect(rendered).to match(/2/)
   end
 
@@ -20,7 +20,7 @@ RSpec.describe "games/show", type: :view do
     render
 
     assert_select "form[action=?][method=?]", "/games/#{@game.id}", "post" do
-      assert_select "input[name=?]", "game[guesses]"
+      assert_select "input[name=?]", "game[guess]"
     end
   end
 end
