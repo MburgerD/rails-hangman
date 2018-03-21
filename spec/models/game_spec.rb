@@ -67,47 +67,57 @@ RSpec.describe Game, type: :model do
   let(:game) { Game.new word: 'foo', lives: 5 }
   subject { game.save }
 
-  context "with guesses not present on update" do
-    it "does not update the game" do
+  context "with guess not present on update" do
+    it "does not update the game (failed validation)" do
       subject
-      expect(game.update(guesses: '')).to be false
+      expect(game.update(guess: '')).to be false
     end
   end
 
-  context "with guesses of more than one letter on update" do
-    it "does not update the game" do
+  context "with guess of more than one letter on update" do
+    it "does not update the game (failed validation)" do
       subject
-      expect(game.update(guesses: 'aaa')).to be false
+      expect(game.update(guess: 'aaa')).to be false
     end
   end
 
-  context "with number submitted to guesses on update" do
-    it "does not update the game" do
+  context "with a number guessed" do
+    it "does not update the game (failed validation)" do
       subject
-      expect(game.update(guesses: 1)).to be false
+      expect(game.update(guess: 1)).to be false
     end
   end
 
-  context "with symbol submitted to guesses on update" do
-    it "does not update the game" do
+  context "with a symbol guessed" do
+    it "does not update the game (failed validation)" do
       subject
-      expect(game.update(guesses: '!')).to be false
+      expect(game.update(guess: '!')).to be false
     end
   end
 
-  context "with single letter submitted to guesses on update" do
-    it "updates the game" do
+  context "with a single letter guessed" do
+    it "updates the game (passes validation)" do
       subject
-      expect(game.update(guesses: 'a')).to be true
-      expect(game.guesses).to eq 'a'
+      expect(game.update(guess: 'a')).to be true
+      expect(game.guess).to eq 'a'
     end
   end
 
   context "with two guesses submitted" do
-    it "stores both letters in guesses" do
+    it "updates the value of guess" do
       subject
-      game.update(guesses: 'a')
-      game.update(guesses: 'b')
+      game.update(guess: 'a')
+      game.update(guess: 'b')
+
+      expect(game.guess).to eq 'b'
+    end
+  end
+
+  context "#add_guess called twice" do
+    it "stores both args in guesses" do
+      subject
+      game.add_guess('a')
+      game.add_guess('b')
 
       expect(game.guesses).to eq 'ab'
     end
