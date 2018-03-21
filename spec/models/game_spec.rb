@@ -65,38 +65,39 @@ RSpec.describe Game, type: :model do
   end
 
   let(:game) { Game.new word: 'foo', lives: 5 }
+  subject { game.save }
 
   context "with guesses not present on update" do
     it "does not update the game" do
-      game.save
+      subject
       expect(game.update(guesses: '')).to be false
     end
   end
 
   context "with guesses of more than one letter on update" do
     it "does not update the game" do
-      game.save
+      subject
       expect(game.update(guesses: 'aaa')).to be false
     end
   end
 
   context "with number submitted to guesses on update" do
     it "does not update the game" do
-      game.save
+      subject
       expect(game.update(guesses: 1)).to be false
     end
   end
 
   context "with symbol submitted to guesses on update" do
     it "does not update the game" do
-      game.save
+      subject
       expect(game.update(guesses: '!')).to be false
     end
   end
 
   context "with single letter submitted to guesses on update" do
     it "updates the game" do
-      game.save
+      subject
       expect(game.update(guesses: 'a')).to be true
       expect(game.guesses).to eq 'a'
     end
@@ -104,7 +105,7 @@ RSpec.describe Game, type: :model do
 
   context "with two guesses submitted" do
     it "stores both letters in guesses" do
-      game.save
+      subject
       game.update(guesses: 'a')
       game.update(guesses: 'b')
 
