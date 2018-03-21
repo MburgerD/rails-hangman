@@ -42,6 +42,7 @@ class GamesController < ApplicationController
   def update
     respond_to do |format|
       if @game.update(game_params)
+        @game.add_guess(game_params['guess'])
         format.html { redirect_to @game, notice: 'Game was successfully updated.' }
         format.json { render :show, status: :ok, location: @game }
       else
@@ -69,6 +70,6 @@ class GamesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def game_params
-      params.require(:game).permit(:word, :guesses, :lives)
+      params.require(:game).permit(:word, :guess, :lives)
     end
 end

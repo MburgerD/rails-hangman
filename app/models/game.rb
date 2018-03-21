@@ -10,4 +10,8 @@ class Game < ApplicationRecord
   validates :guess, presence: true, on: :update,
                     length: { maximum: 1 },
                     format: { with: /[a-zA-Z]/, message: "must be a letter" }
+
+  def add_guess(letter)
+    update guesses: guesses + letter
+  end
 end
