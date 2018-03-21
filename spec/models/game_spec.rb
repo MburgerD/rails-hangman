@@ -101,4 +101,14 @@ RSpec.describe Game, type: :model do
       expect(game.guesses).to eq 'a'
     end
   end
+
+  context "with two guesses submitted" do
+    it "stores both letters in guesses" do
+      game.save
+      game.update(guesses: 'a')
+      game.update(guesses: 'b')
+
+      expect(game.guesses).to eq 'ab'
+    end
+  end
 end
