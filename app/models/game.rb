@@ -12,7 +12,7 @@ class Game < ApplicationRecord
                     format: { with: /[a-zA-Z]/, message: "must be a letter" }
 
   def add_guess(letter)
-    update guesses: guesses + letter
+    update guesses: guesses + letter.downcase
   end
 
   def guessed_word
