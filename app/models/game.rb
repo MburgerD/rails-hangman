@@ -14,7 +14,7 @@ class Game < ApplicationRecord
                     guess: true
 
   def add_guess(letter)
-    update guesses: guesses + letter.downcase
+    update_attribute :guesses, guesses + letter.downcase
   end
 
   def guessed_word
