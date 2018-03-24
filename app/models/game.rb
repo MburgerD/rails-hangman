@@ -14,4 +14,16 @@ class Game < ApplicationRecord
   def add_guess(letter)
     update guesses: guesses + letter
   end
+
+  def guessed_word
+    ''.tap do |revealed_letters|
+      word.split('').each do |letter|
+        if guesses.include? letter.downcase
+          revealed_letters << letter
+        else
+          revealed_letters << '-'
+        end
+      end
+    end
+  end
 end
