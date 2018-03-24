@@ -115,6 +115,15 @@ RSpec.describe Game, type: :model do
         expect(game.guess).to eq 'b'
       end
     end
+
+    context "with an already guessed letter" do
+      it "does not update the game (failed validation)" do
+        subject
+        game.add_guess('a')
+
+        expect(game.update(guess: 'a')).to be false
+      end
+    end
   end
 
   describe "#add_guess" do
