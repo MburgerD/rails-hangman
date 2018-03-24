@@ -15,7 +15,7 @@
   <tbody>
     <% @games.each do |game| %>
       <tr>
-        <td><%= game.word %></td>
+        <td><%= game.guessed_word %></td>
         <td><%= game.guesses %></td>
         <td><%= game.lives %></td>
         <td><%= link_to 'Show', game %></td>
