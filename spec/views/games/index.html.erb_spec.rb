@@ -5,12 +5,12 @@ RSpec.describe "games/index", type: :view do
     assign(:games, [
       Game.create!(
         :word => "Word",
-        :guesses => "",
+        :guesses => "wr",
         :lives => 2
       ),
       Game.create!(
         :word => "Word",
-        :guesses => "",
+        :guesses => "wr",
         :lives => 2
       )
     ])
@@ -18,8 +18,8 @@ RSpec.describe "games/index", type: :view do
 
   it "renders a list of games" do
     render
-    assert_select "tr>td", :text => "Word".to_s, :count => 2
-    assert_select "tr>td", :text => "".to_s, :count => 2
+    assert_select "tr>td", :text => "W-r-".to_s, :count => 2
+    assert_select "tr>td", :text => "wr".to_s, :count => 2
     assert_select "tr>td", :text => 2.to_s, :count => 2
   end
 end
