@@ -128,4 +128,26 @@ RSpec.describe Game, type: :model do
       end
     end
   end
+
+  describe "#guessed_word" do
+    context "no correct letters guessed" do
+      it "displays only dashes" do
+        game = Game.new word: 'fOo', lives: 5
+        game.add_guess('a')
+        game.add_guess('b')
+
+        expect(game.guessed_word).to eq '---'
+      end
+    end
+
+    context "correct letters guessed" do
+      it "displays guessed letters" do
+        game = Game.new word: 'fOo', lives: 5
+        game.add_guess('a')
+        game.add_guess('o')
+
+        expect(game.guessed_word).to eq '-Oo'
+      end
+    end
+  end
 end
