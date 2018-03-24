@@ -127,6 +127,15 @@ RSpec.describe Game, type: :model do
         expect(game.guesses).to eq 'ab'
       end
     end
+
+    context "called with capital letter" do
+      it "stores downcase letter in guesses" do
+        game = Game.new word: 'foo', lives: 5
+        game.add_guess('A')
+
+        expect(game.guesses).to eq 'a'
+      end
+    end
   end
 
   describe "#guessed_word" do
