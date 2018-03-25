@@ -28,4 +28,21 @@ class Game < ApplicationRecord
       end
     end
   end
+
+  def update_lives
+    unless letter_in_word?
+      deduct_life
+    end
+  end
+
+  private
+
+  def letter_in_word?
+    word.downcase.include? guess
+  end
+
+  def deduct_life
+    update_attribute :lives, lives - 1
+  end
+
 end
