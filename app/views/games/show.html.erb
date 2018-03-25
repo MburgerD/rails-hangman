@@ -19,7 +19,7 @@
 <% if @game.game_won? %>
   <p>Well done, you won!</p>
 <% elsif @game.game_lost? %>
-  <p>Game lost!</p>
+  <p>Game lost! The word was <%= @game.word %></p>
 <% else %>
   <%= form_with(model: @game, local: true) do |form| %>
     <% if @game.errors.any? %>
