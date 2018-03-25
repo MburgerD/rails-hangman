@@ -57,7 +57,7 @@ RSpec.describe "games/show", type: :view do
       expect(@game.game_lost?).to eq true
       render
 
-      expect(rendered).to match(/Game lost!/)
+      expect(rendered).to match(/Game lost! The word was #{@game.word}/)
     end
   end
 
