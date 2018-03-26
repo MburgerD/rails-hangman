@@ -47,7 +47,17 @@ class Game < ApplicationRecord
     all_letters_guessed?
   end
 
+  def random_word
+    chosen_word = nil
+    File.foreach(DICT_PATH).each_with_index do |line, number|
+      chosen_word = line if rand < 1.0 / (number + 1)
+    end
+    chosen_word.chomp
+  end
+
   private
+
+  DICT_PATH = '/usr/share/dict/words'.freeze
 
   def letter_in_word?
     word.downcase.include? guess
@@ -64,5 +74,4 @@ class Game < ApplicationRecord
   def all_letters_guessed?
     word.downcase.split('').uniq.length == correct_letters.uniq.length
   end
-
 end
