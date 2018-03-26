@@ -1,5 +1,3 @@
-  <p id="notice"><%= notice %></p>
-
 <p>
   <strong>Word:</strong>
   <%= @game.guessed_word %>
@@ -22,17 +20,8 @@
   <p>Game lost! The word was <%= @game.word %></p>
 <% else %>
   <%= form_with(model: @game, local: true) do |form| %>
-    <% if @game.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(@game.errors.count, "error") %> prohibited this game from being saved:</h2>
 
-        <ul>
-        <% @game.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <%= render 'errors', game: @game %>
 
     <div class="field">
       <%= form.label "Guess a letter" %>
