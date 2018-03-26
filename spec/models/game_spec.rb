@@ -189,4 +189,11 @@ RSpec.describe Game, type: :model do
       end
     end
   end
+
+  describe "#random_word" do
+    let(:game) { Game.new word: 'foo', lives: 5 }
+    it "returns a string" do
+      expect(game.random_word.class).to eq String
+    end
+  end
 end
