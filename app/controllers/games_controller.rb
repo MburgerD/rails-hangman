@@ -10,6 +10,12 @@ class GamesController < ApplicationController
   # GET /games/1
   # GET /games/1.json
   def show
+    if @game.game_won?
+      flash.now[:success] = 'You won!'
+    elsif @game.game_lost?
+      flash.now[:danger] =
+        "Game lost! The word was <strong><mark>#{@game.word}</mark></strong>"
+    end
   end
 
   # GET /games/new
@@ -40,8 +46,11 @@ class GamesController < ApplicationController
     respond_to do |format|
       if @game.update(game_params)
         @game.add_guess(game_params['guess'])
-        @game.update_lives
-        flash[:success] = 'Game was successfully updated.'
+        if @game.update_lives?
+          flash[:danger] = 'Incorrect guess'
+        else
+          flash[:success] = 'Correct guess'
+        end
         format.html { redirect_to @game }
         format.json { render :show, status: :ok, location: @game }
       else

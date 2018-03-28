@@ -14,15 +14,7 @@
 </p>
 
 
-<% if @game.game_won? %>
-<div class="alert alert-success">
-  <p>Well done, you won!</p>
-</div>
-<% elsif @game.game_lost? %>
-<div class="alert alert-danger">
-  <p>Game lost! The word was <strong class='mark'><%= @game.word %></strong></p>
-</div>
-<% else %>
+<% unless @game.game_over? %>
   <%= form_with(model: @game, local: true, html: {class: 'form-inline'}) do |form| %>
     <%= render 'errors', game: @game %>
 

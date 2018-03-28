@@ -29,10 +29,8 @@ class Game < ApplicationRecord
     end
   end
 
-  def update_lives
-    unless letter_in_word?
-      deduct_life
-    end
+  def update_lives?
+    deduct_life unless letter_in_word?
   end
 
   def game_over?
