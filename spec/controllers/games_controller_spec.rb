@@ -38,6 +38,11 @@ describe GamesController do
         post :create, params: { game: valid_attributes }
         expect(response).to redirect_to(Game.last)
       end
+
+      it "flashes success message" do
+        post :create, params: { game: valid_attributes }
+        expect(flash[:success]).to be_present
+      end
     end
 
     context "with invalid params" do
