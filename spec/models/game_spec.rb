@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Game, type: :model do
+describe Game do
   describe "#save" do
     context "with no word entered" do
       it "does not save the game" do
