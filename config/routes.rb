@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
   resources :games
-  root 'hangman#index'
+  root 'hangman#show'
 end

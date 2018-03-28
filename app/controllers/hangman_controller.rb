@@ -1,4 +1,4 @@
 class HangmanController < ApplicationController
-  def index
+  def show
   end
 end
