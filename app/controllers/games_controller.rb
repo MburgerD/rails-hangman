@@ -26,7 +26,12 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
-    @game = Game.new(game_params)
+    if params[:generate_word]
+      @game = Game.new
+      @game.word = @game.random_word
+    else
+      @game = Game.new(game_params)
+    end
 
     respond_to do |format|
       if @game.save
