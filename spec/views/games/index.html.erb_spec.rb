@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "games/index", type: :view do
+describe "games/index" do
   before(:each) do
     assign(:games, [
       Game.create!(
@@ -21,5 +21,15 @@ RSpec.describe "games/index", type: :view do
     assert_select "tr>td", :text => "W-r-".to_s, :count => 2
     assert_select "tr>td", :text => "wr".to_s, :count => 2
     assert_select "tr>td", :text => 2.to_s, :count => 2
+  end
+
+  it "renders custom game button" do
+    render
+    expect(rendered).to include "Create a custom game"
+  end
+
+  it "renders random word button" do
+    render
+    expect(rendered).to include "Create game with a random word"
   end
 end
