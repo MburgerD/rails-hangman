@@ -2,7 +2,7 @@
 
 <h1>Games</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Word</th>
@@ -18,8 +18,8 @@
         <td><%= game.guessed_word %></td>
         <td><%= game.guesses %></td>
         <td><%= game.lives %></td>
-        <td><%= link_to 'Show', game %></td>
-        <td><%= link_to 'Destroy', game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', game, class: 'btn btn-default btn-xs'%></td>
+        <td><%= link_to 'Destroy', game, class: 'btn btn-warning btn-xs', method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -27,4 +27,6 @@
 
 <br>
 
-<%= link_to 'New Game', new_game_path %>
+<%= link_to new_game_path, class: 'btn btn-default btn-sm' do %>
+  <i class="glyphicon glyphicon-plus"></i> New Game
+<% end %>

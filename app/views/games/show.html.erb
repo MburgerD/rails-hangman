@@ -15,23 +15,26 @@
 
 
 <% if @game.game_won? %>
+<div class="alert alert-success">
   <p>Well done, you won!</p>
+</div>
 <% elsif @game.game_lost? %>
-  <p>Game lost! The word was <%= @game.word %></p>
+<div class="alert alert-danger">
+  <p>Game lost! The word was <strong class='mark'><%= @game.word %></strong></p>
+</div>
 <% else %>
-  <%= form_with(model: @game, local: true) do |form| %>
-
+  <%= form_with(model: @game, local: true, html: {class: 'form-inline'}) do |form| %>
     <%= render 'errors', game: @game %>
 
-    <div class="field">
-      <%= form.label "Guess a letter" %>
-      <%= form.text_field :guess, id: :game_word %>
+    <div class="field form-group">
+      <%= form.label "Guess a letter", class: 'control-label' %>
+      <%= form.text_field :guess, id: :game_word, class: 'form-control' %>
     </div>
 
-    <div class="actions">
-      <%= form.submit %>
+    <div class="actions form-group">
+      <%= form.submit 'Submit', class: 'btn btn-default btn-sm'%>
     </div>
   <% end %>
 <% end %>
 
-<%= link_to 'Back', games_path %>
+<%= link_to 'Back', games_path, class: 'btn btn-default btn-sm' %>

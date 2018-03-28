@@ -28,7 +28,7 @@ And(/^I enter a guess$/) do
 end
 
 Then(/^I click update game$/) do
-  click_on('Update Game')
+  click_on('Submit')
 end
 
 And(/^I click on the back link$/) do

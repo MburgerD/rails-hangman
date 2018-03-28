@@ -9,6 +9,26 @@
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">Hangman</a>
+      </div>
+    </div>
+  </nav>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <% flash.each do |name, msg| -%>
+          <%= content_tag :div, msg, class: "alert alert-#{name}" %>
+        <% end -%>
+      </div>
+    </div>
+
+    <div id="main-container" class="container">
+      <div class="row">
+          <%= yield %>
+      </div>
+    </div>
   </body>
 </html>
