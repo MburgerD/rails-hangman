@@ -14,7 +14,7 @@ describe GamesController do
 
   describe "GET #show" do
     it "returns a success response" do
-      get :show, params: {id: game.to_param}
+      get :show, params: { id: game.id }
       expect(response).to be_success
     end
   end
@@ -30,52 +30,84 @@ describe GamesController do
     context "with valid params" do
       it "creates a new Game" do
         expect {
-          post :create, params: {game: valid_attributes}
+          post :create, params: { game: valid_attributes }
         }.to change(Game, :count).by(1)
       end
 
       it "redirects to the created game" do
-        post :create, params: {game: valid_attributes}
+        post :create, params: { game: valid_attributes }
         expect(response).to redirect_to(Game.last)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {game: invalid_attributes}
+        post :create, params: { game: invalid_attributes }
         expect(response).to be_success
       end
     end
   end
 
   describe "PUT #update" do
-    context "with valid params" do
-      let(:new_attributes) { { "guess" => "a" } }
+    context "with invalid guess" do
+      let(:invalid_guess) { { "guess" => 123 } }
 
-      it "updates the requested game" do
-        put :update, params: {id: game.to_param, game: new_attributes}
-        game.reload
-        expect(game.guesses).to eq "a"
-      end
-
-      it "updates the requested game's lives" do
-        allow_any_instance_of(Game).to receive(:update_lives?)
-        expect_any_instance_of(Game).to receive(:update_lives?)
-        put :update, params: {id: game.id, game: new_attributes}
-      end
-
-      it "redirects to the game" do
-        put :update, params: {id: game.to_param, game: new_attributes}
-        expect(response).to redirect_to(game)
+      it "returns a success response (i.e. to display the 'show' template)" do
+        put :update, params: { id: game.id, game: invalid_guess }
+        expect(response).to be_success
       end
     end
 
-    context "with invalid params" do
-      let(:new_invalid_attributes) { { "guess" => 123 } }
+    context "correct guess" do
+      let(:correct_guess) { { "guess" => "f" } }
 
-      it "returns a success response (i.e. to display the 'show' template)" do
-        put :update, params: {id: game.to_param, game: new_invalid_attributes}
-        expect(response).to be_success
+      it "adds guess to guesses" do
+        put :update, params: { id: game.id, game: correct_guess }
+        game.reload
+        expect(game.guesses).to eq "f"
+      end
+
+      it "does not deduct a life" do
+        allow_any_instance_of(Game).to receive(:update_lives?)
+        expect_any_instance_of(Game).to receive(:update_lives?)
+        put :update, params: { id: game.id, game: correct_guess }
+        expect(game.lives).to eq 5
+      end
+
+      it "redirects to the game" do
+        put :update, params: { id: game.id, game: correct_guess }
+        expect(response).to redirect_to(game)
+      end
+
+      it "flashes success message" do
+        put :update, params: { id: game.id, game: correct_guess }
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context "incorrect guess" do
+      let(:incorrect_guess) { { "guess" => "z" } }
+
+      it "adds guess to guesses" do
+        put :update, params: { id: game.id, game: incorrect_guess }
+        game.reload
+        expect(game.guesses).to eq "z"
+      end
+
+      it "deducts a life" do
+        put :update, params: { id: game.id, game: incorrect_guess }
+        game.reload
+        expect(game.lives).to eq 4
+      end
+
+      it "redirects to the game" do
+        put :update, params: { id: game.id, game: incorrect_guess }
+        expect(response).to redirect_to(game)
+      end
+
+      it "flashes danger message" do
+        put :update, params: { id: game.id, game: incorrect_guess }
+        expect(flash[:danger]).to be_present
       end
     end
   end
@@ -84,12 +116,12 @@ describe GamesController do
     it "destroys the requested game" do
       game = Game.create! valid_attributes
       expect {
-        delete :destroy, params: {id: game.to_param}
+        delete :destroy, params: { id: game.id }
       }.to change(Game, :count).by(-1)
     end
 
     it "redirects to the games list" do
-      delete :destroy, params: {id: game.to_param}
+      delete :destroy, params: { id: game.id }
       expect(response).to redirect_to(games_url)
     end
   end
