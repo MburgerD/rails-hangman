@@ -27,7 +27,7 @@ describe GamesController do
   end
 
   describe "POST #create" do
-    context "with valid params" do
+    context "with valid custom params" do
       it "creates a new Game" do
         expect {
           post :create, params: { game: valid_attributes }
@@ -41,6 +41,26 @@ describe GamesController do
 
       it "flashes success message" do
         post :create, params: { game: valid_attributes }
+        expect(flash[:success]).to be_present
+      end
+    end
+
+    context "with valid random game params" do
+      let(:random_game_params) { {  generate_word: "Create game with a random word" } }
+
+      it "creates a new Game" do
+        expect {
+          post :create, params: random_game_params
+        }.to change(Game, :count).by(1)
+      end
+
+      it "redirects to the created game" do
+        post :create, params: random_game_params
+        expect(response).to redirect_to(Game.last)
+      end
+
+      it "flashes success message" do
+        post :create, params: random_game_params
         expect(flash[:success]).to be_present
       end
     end
