@@ -169,12 +169,12 @@ describe Game do
     end
   end
 
-  describe "#update_lives" do
+  describe "#update_lives?" do
     let(:game) { Game.new word: 'foo', lives: 5 }
     context "with correct letter guessed" do
       it "does not deduct a life" do
         game.update(guess: 'f')
-        game.update_lives
+        game.update_lives?
 
         expect(game.lives).to eq 5
       end
@@ -183,7 +183,7 @@ describe Game do
     context "with incorrect letter guessed" do
       it "deducts a life" do
         game.update(guess: 'z')
-        game.update_lives
+        game.update_lives?
 
         expect(game.lives).to eq 4
       end

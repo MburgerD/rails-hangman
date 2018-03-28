@@ -94,8 +94,8 @@ RSpec.describe GamesController, type: :controller do
       it "updates the requested game's lives" do
         game = Game.create! valid_attributes
         game.reload
-        allow_any_instance_of(Game).to receive(:update_lives)
-        expect_any_instance_of(Game).to receive(:update_lives)
+        allow_any_instance_of(Game).to receive(:update_lives?)
+        expect_any_instance_of(Game).to receive(:update_lives?)
         put :update, params: {id: game.id, game: new_attributes}, session: valid_session
       end
 

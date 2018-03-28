@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "games/show", type: :view do
+describe "games/show" do
   before(:each) do
     @game = assign(:game, Game.create!(
                             :word => "Word",
@@ -26,40 +26,22 @@ RSpec.describe "games/show", type: :view do
   end
 
   context "game won" do
-    it "done not render form" do
+    it "does not render form" do
       @game.guesses << 'word'
       expect(@game.game_won?).to eq true
       render
 
       assert_select "form", :count => 0
-    end
-
-    it "displays game won message" do
-      @game.guesses << 'word'
-      expect(@game.game_won?).to eq true
-      render
-
-      expect(rendered).to match(/Well done, you won!/)
     end
   end
 
   context "game lost" do
-    it "renders show game form" do
+    it "does not render form" do
       @game.lives = 0
       expect(@game.game_lost?).to eq true
       render
 
       assert_select "form", :count => 0
-    end
-
-    it "displays game lost message" do
-      @game.lives = 0
-      expect(@game.game_lost?).to eq true
-      render
-
-      expect(rendered).to match(
-        %r{Game lost! The word was <strong class='mark'>#{@game.word}</strong>}m
-      )
     end
   end
 
