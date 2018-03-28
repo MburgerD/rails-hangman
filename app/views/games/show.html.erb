@@ -1,3 +1,5 @@
+<%= render 'errors', game: @game %>
+
 <p>
   <strong>Word:</strong>
   <%= @game.guessed_word %>
@@ -16,16 +18,15 @@
 
 <% unless @game.game_over? %>
   <%= form_with(model: @game, local: true, html: {class: 'form-inline'}) do |form| %>
-    <%= render 'errors', game: @game %>
 
-    <div class="field form-group">
       <%= form.label "Guess a letter", class: 'control-label' %>
-      <%= form.text_field :guess, id: :game_word, class: 'form-control' %>
-    </div>
+      <div class="field form-group">
+        <%= form.text_field :guess, id: :game_word, class: 'form-control' %>
+      </div>
 
-    <div class="actions form-group">
-      <%= form.submit 'Submit', class: 'btn btn-default btn-sm'%>
-    </div>
+      <div class="actions form-group">
+        <%= form.submit 'Submit', class: 'btn btn-default btn-sm'%>
+      </div>
   <% end %>
 <% end %>
 
