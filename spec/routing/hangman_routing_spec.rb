@@ -1,10 +1,10 @@
 require 'rails_helper'
 
-RSpec.describe "routing to hangman", :type => :routing do
-  it "routes / to hangman#index" do
+describe "routing to hangman" do
+  it "routes / to hangman#show" do
     expect(:get => "/").to route_to(
       :controller => "hangman",
-      :action => "index"
+      :action => "show"
     )
   end
 end
