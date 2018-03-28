@@ -26,12 +26,12 @@ Then(/^I should go the games page$/) do
   expect(page).to have_current_path("/games")
 end
 
-Then(/^I should see a link to new game$/) do
-  have_link("New Game")
+Then(/^I should see a link to custom game$/) do
+  have_link("Create a custom game")
 end
 
-When(/^I click on the new game link$/) do
-  click_link("New Game")
+When(/^I click on the custom game link$/) do
+  click_link("Create a custom game")
 end
 
 Then(/^I should go the new game page$/) do
