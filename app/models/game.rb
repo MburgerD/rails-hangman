@@ -13,6 +13,11 @@ class Game < ApplicationRecord
                     format: { with: /[a-zA-Z]/, message: "must be a letter" },
                     guess: true
 
+  def update_guess(guess_param)
+    return unless update(guess_param)
+    add_guess(guess)
+  end
+
   def add_guess(letter)
     update_attribute :guesses, guesses + letter.downcase
   end

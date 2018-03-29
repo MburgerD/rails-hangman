@@ -30,7 +30,7 @@ class GamesController < ApplicationController
       @game = Game.new
       @game.word = @game.random_word
     else
-      @game = Game.new(game_params)
+      @game = Game.new(new_game_params)
     end
 
     respond_to do |format|
@@ -49,8 +49,7 @@ class GamesController < ApplicationController
   # PATCH/PUT /games/1.json
   def update
     respond_to do |format|
-      if @game.update(game_params)
-        @game.add_guess(game_params['guess'])
+      if @game.update_guess(update_game_params)
         if @game.update_lives?
           flash[:danger] = 'Incorrect guess'
         else
@@ -77,13 +76,16 @@ class GamesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game
-      @game = Game.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def game_params
-      params.require(:game).permit(:word, :guess, :lives)
-    end
+  def set_game
+    @game = Game.find(params[:id])
+  end
+
+  def new_game_params
+    params.require(:game).permit(:word, :lives)
+  end
+
+  def update_game_params
+    params.require(:game).permit(:guess)
+  end
 end
