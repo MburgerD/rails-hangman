@@ -20,11 +20,12 @@ ActiveRecord::Schema.define(version: 20180402221331) do
   end
 
   create_table "guesses", force: :cascade do |t|
-    t.string "letter"
+    t.string "letter", null: false
     t.integer "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["game_id"], name: "index_guesses_on_game_id"
+    t.index ["letter"], name: "index_guesses_on_letter", unique: true
   end
 
 end
