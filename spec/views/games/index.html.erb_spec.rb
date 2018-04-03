@@ -2,24 +2,17 @@ require 'rails_helper'
 
 describe "games/index" do
   before(:each) do
-    assign(:games, [
-      Game.create!(
-        :word => "Word",
-        :guesses => "wr",
-        :lives => 2
-      ),
-      Game.create!(
-        :word => "Word",
-        :guesses => "wr",
-        :lives => 2
-      )
-    ])
+    game1 = Game.create!(:word => "Word", :lives => 2)
+    game2 = Game.create!(:word => "Word", :lives => 2)
+    game1.guesses.create letter: 'w'
+    game2.guesses.create letter: 'w'
+    assign(:games, [game1, game2])
   end
 
   it "renders a list of games" do
     render
-    assert_select "tr>td", :text => "W-r-".to_s, :count => 2
-    assert_select "tr>td", :text => "wr".to_s, :count => 2
+    assert_select "tr>td", :text => "W---".to_s, :count => 2
+    assert_select "tr>td", :text => "w".to_s, :count => 2
     assert_select "tr>td", :text => 2.to_s, :count => 2
   end
 
