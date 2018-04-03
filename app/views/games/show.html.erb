@@ -1,4 +1,4 @@
-<%= render 'errors', game: @game %>
+<%= render 'games/errors', object: @guess %>
 
 <p>
   <strong>Word:</strong>
@@ -7,21 +7,21 @@
 
 <p>
   <strong>Guesses:</strong>
-  <%= @game.guesses %>
+  <%= @game.guesses_list.join(' ') %>
 </p>
 
 <p>
   <strong>Lives:</strong>
-  <%= @game.lives %>
+  <%= @game.remaining_lives %>
 </p>
 
 
 <% unless @game.game_over? %>
-  <%= form_with(model: @game, local: true, html: {class: 'form-inline'}) do |form| %>
+  <%= form_with(model: [ @game, @game.guesses.build ], local: true, html: {class: 'form-inline'}) do |form| %>
 
       <%= form.label "Guess a letter", class: 'control-label' %>
       <div class="field form-group">
-        <%= form.text_field :guess, id: :game_word, class: 'form-control' %>
+        <%= form.text_field :letter, id: :game_word, class: 'form-control' %>
       </div>
 
       <div class="actions form-group">
