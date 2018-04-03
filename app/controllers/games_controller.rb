@@ -45,25 +45,6 @@ class GamesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /games/1
-  # PATCH/PUT /games/1.json
-  def update
-    respond_to do |format|
-      if @game.update_guess(update_game_params)
-        if @game.update_lives?
-          flash[:danger] = 'Incorrect guess'
-        else
-          flash[:success] = 'Correct guess'
-        end
-        format.html { redirect_to @game }
-        format.json { render :show, status: :ok, location: @game }
-      else
-        format.html { render :show }
-        format.json { render json: @game.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /games/1
   # DELETE /games/1.json
   def destroy
@@ -83,9 +64,5 @@ class GamesController < ApplicationController
 
   def new_game_params
     params.require(:game).permit(:word, :lives)
-  end
-
-  def update_game_params
-    params.require(:game).permit(:guess)
   end
 end
