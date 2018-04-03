@@ -4,9 +4,9 @@ describe "games/show" do
   before(:each) do
     @game = assign(:game, Game.create!(
                             :word => "Word",
-                            :guesses => "r",
                             :lives => 2
     ))
+    @game.guesses.create letter: 'r'
   end
 
   it "shows only letters in the word which have been guessed" do
@@ -15,19 +15,23 @@ describe "games/show" do
   end
 
   context "game not won or lost" do
+    let(:form_action) { "/games/#{@game.id}/guesses" }
+
     it "renders show game form" do
       expect(@game.game_over?).to eq false
       render
 
-      assert_select "form[action=?][method=?]", "/games/#{@game.id}", "post" do
-        assert_select "input[name=?]", "game[guess]"
+      assert_select "form[action=?][method=?]", form_action, "post" do
+        assert_select "input[name=?]", "guess[letter]"
       end
     end
   end
 
   context "game won" do
     it "does not render form" do
-      @game.guesses << 'word'
+      @game.guesses.create letter: 'w'
+      @game.guesses.create letter: 'o'
+      @game.guesses.create letter: 'd'
       expect(@game.game_won?).to eq true
       render
 
@@ -44,5 +48,4 @@ describe "games/show" do
       assert_select "form", :count => 0
     end
   end
-
 end
