@@ -46,7 +46,7 @@ describe GamesController do
     end
 
     context "with valid random game params" do
-      let(:random_game_params) { {  generate_word: "Create game with a random word" } }
+      let(:random_game_params) { {  generate_word: "" } }
 
       it "creates a new Game" do
         expect {
@@ -66,73 +66,9 @@ describe GamesController do
     end
 
     context "with invalid params" do
-      it "returns a success response (i.e. to display the 'new' template)" do
+      it "renders the 'new' template" do
         post :create, params: { game: invalid_attributes }
-        expect(response).to be_success
-      end
-    end
-  end
-
-  describe "PUT #update" do
-    context "with invalid guess" do
-      let(:invalid_guess) { { "guess" => 123 } }
-
-      it "returns a success response (i.e. to display the 'show' template)" do
-        put :update, params: { id: game.id, game: invalid_guess }
-        expect(response).to be_success
-      end
-    end
-
-    context "correct guess" do
-      let(:correct_guess) { { "guess" => "f" } }
-
-      it "adds guess to guesses" do
-        put :update, params: { id: game.id, game: correct_guess }
-        game.reload
-        expect(game.guesses).to eq "f"
-      end
-
-      it "does not deduct a life" do
-        allow_any_instance_of(Game).to receive(:update_lives?)
-        expect_any_instance_of(Game).to receive(:update_lives?)
-        put :update, params: { id: game.id, game: correct_guess }
-        expect(game.lives).to eq 5
-      end
-
-      it "redirects to the game" do
-        put :update, params: { id: game.id, game: correct_guess }
-        expect(response).to redirect_to(game)
-      end
-
-      it "flashes success message" do
-        put :update, params: { id: game.id, game: correct_guess }
-        expect(flash[:success]).to be_present
-      end
-    end
-
-    context "incorrect guess" do
-      let(:incorrect_guess) { { "guess" => "z" } }
-
-      it "adds guess to guesses" do
-        put :update, params: { id: game.id, game: incorrect_guess }
-        game.reload
-        expect(game.guesses).to eq "z"
-      end
-
-      it "deducts a life" do
-        put :update, params: { id: game.id, game: incorrect_guess }
-        game.reload
-        expect(game.lives).to eq 4
-      end
-
-      it "redirects to the game" do
-        put :update, params: { id: game.id, game: incorrect_guess }
-        expect(response).to redirect_to(game)
-      end
-
-      it "flashes danger message" do
-        put :update, params: { id: game.id, game: incorrect_guess }
-        expect(flash[:danger]).to be_present
+        expect(response).to render_template(:new)
       end
     end
   end
