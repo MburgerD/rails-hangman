@@ -11,7 +11,7 @@ class Game < ApplicationRecord
   def guessed_word
     ''.tap do |revealed_letters|
       word.split('').each do |letter|
-        if guesses.include? letter.downcase
+        if guesses_list.include? letter.downcase
           revealed_letters << letter
         else
           revealed_letters << '-'
@@ -20,8 +20,14 @@ class Game < ApplicationRecord
     end
   end
 
-  def update_lives?
-    deduct_life unless letter_in_word?
+  def guesses_list
+    [].tap do |guessed_letters|
+      guesses.each { |guess| guessed_letters << guess.letter }
+    end
+  end
+
+  def remaining_lives
+    lives - guesses.length + correct_guesses.length
   end
 
   def game_over?
@@ -29,7 +35,7 @@ class Game < ApplicationRecord
   end
 
   def game_lost?
-    lives.zero?
+    remaining_lives.zero?
   end
 
   def game_won?
@@ -48,19 +54,15 @@ class Game < ApplicationRecord
 
   DICT_PATH = '/usr/share/dict/words'.freeze
 
-  def letter_in_word?
-    word.downcase.include? guess
+  def letter_in_word?(letter)
+    word.downcase.include? letter
   end
 
-  def deduct_life
-    update_attribute :lives, lives - 1
-  end
-
-  def correct_letters
-    word.downcase.split('').uniq & guesses.split('')
+  def correct_guesses
+    word.downcase.split('').uniq & guesses_list
   end
 
   def all_letters_guessed?
-    word.downcase.split('').uniq.length == correct_letters.uniq.length
+    word.downcase.split('').uniq.length == correct_guesses.length
   end
 end

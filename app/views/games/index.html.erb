@@ -29,8 +29,8 @@
     <% @games.each do |game| %>
       <tr>
         <td><%= game.guessed_word %></td>
-        <td><%= game.guesses %></td>
-        <td><%= game.lives %></td>
+        <td><%= game.guesses_list.join(' ') %></td>
+        <td><%= game.remaining_lives %></td>
         <td><%= link_to 'Show', game, class: 'btn btn-default btn-xs'%></td>
         <td><%= link_to 'Destroy', game, class: 'btn btn-warning btn-xs', method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
