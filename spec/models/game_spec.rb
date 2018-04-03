@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Game do
-  describe "#save" do
+  describe "validation on Game creation" do
     context "with no word entered" do
       it "does not save the game" do
         game = Game.new
@@ -66,134 +66,36 @@ describe Game do
     end
   end
 
-  describe "#update" do
-    let(:game) { Game.new word: 'foo', lives: 5 }
-    subject { game.save }
-
-    context "with guess not present on update" do
-      it "does not update the game (failed validation)" do
-        subject
-        expect(game.update(guess: '')).to be false
-      end
-    end
-
-    context "with guess of more than one letter on update" do
-      it "does not update the game (failed validation)" do
-        subject
-        expect(game.update(guess: 'aaa')).to be false
-      end
-    end
-
-    context "with a number guessed" do
-      it "does not update the game (failed validation)" do
-        subject
-        expect(game.update(guess: 1)).to be false
-      end
-    end
-
-    context "with a symbol guessed" do
-      it "does not update the game (failed validation)" do
-        subject
-        expect(game.update(guess: '!')).to be false
-      end
-    end
-
-    context "with a single letter guessed" do
-      it "updates the game (passes validation)" do
-        subject
-        expect(game.update(guess: 'a')).to be true
-        expect(game.guess).to eq 'a'
-      end
-    end
-
-    context "with two guesses submitted" do
-      it "updates the value of guess" do
-        subject
-        game.update(guess: 'a')
-        game.update(guess: 'b')
-
-        expect(game.guess).to eq 'b'
-      end
-    end
-
-    context "with an already guessed letter" do
-      it "does not update the game (failed validation)" do
-        subject
-        game.add_guess('a')
-
-        expect(game.update(guess: 'a')).to be false
-      end
-    end
-  end
-
-  describe "#add_guess" do
-    context "#add_guess called twice" do
-      it "stores both args in guesses" do
-        game = Game.new word: 'foo', lives: 5
-        game.add_guess('a')
-        game.add_guess('b')
-
-        expect(game.guesses).to eq 'ab'
-      end
-    end
-
-    context "called with capital letter" do
-      it "stores downcase letter in guesses" do
-        game = Game.new word: 'foo', lives: 5
-        game.add_guess('A')
-
-        expect(game.guesses).to eq 'a'
-      end
-    end
-  end
-
-  describe "#guessed_word" do
-    context "no correct letters guessed" do
-      it "displays only dashes" do
-        game = Game.new word: 'fOo', lives: 5
-        game.add_guess('a')
-        game.add_guess('b')
-
-        expect(game.guessed_word).to eq '---'
-      end
-    end
-
-    context "correct letters guessed" do
-      it "displays guessed letters" do
-        game = Game.new word: 'fOo', lives: 5
-        game.add_guess('a')
-        game.add_guess('o')
-
-        expect(game.guessed_word).to eq '-Oo'
-      end
-    end
-  end
-
-  describe "#update_lives?" do
-    let(:game) { Game.new word: 'foo', lives: 5 }
+  describe "#remaining_lives" do
+    let(:game) { Game.create word: 'foo', lives: 5 }
     context "with correct letter guessed" do
-      it "does not deduct a life" do
-        game.update(guess: 'f')
-        game.update_lives?
+      it "has all lives" do
+        game.guesses.create letter: 'f'
 
-        expect(game.lives).to eq 5
+        expect(game.remaining_lives).to eq 5
       end
     end
 
     context "with incorrect letter guessed" do
-      it "deducts a life" do
-        game.update(guess: 'z')
-        game.update_lives?
+      it "has one less life" do
+        game.guesses.create letter: 'z'
 
-        expect(game.lives).to eq 4
+        expect(game.remaining_lives).to eq 4
       end
     end
   end
 
-  describe "#random_word" do
-    let(:game) { Game.new word: 'foo', lives: 5 }
-    it "returns a string" do
-      expect(game.random_word.class).to eq String
+  describe "#guesses_list" do
+    let(:game) { Game.create word: 'foo', lives: 5 }
+    before(:each) do
+      game.guesses.create letter: 'a'
+      game.guesses.create letter: 'b'
+    end
+
+    context "with two existing guesses" do
+      it "returns a list of the letters of the guesses" do
+        expect(game.guesses_list).to eq ['a', 'b']
+      end
     end
   end
 end
