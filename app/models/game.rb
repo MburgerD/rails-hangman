@@ -30,11 +30,11 @@ class Game < ApplicationRecord
     all_letters_guessed?
   end
 
-  private
-
   def letter_in_word?(letter)
     word.downcase.include? letter
   end
+
+  private
 
   def correct_guesses
     word.downcase.split('').uniq & guesses_list

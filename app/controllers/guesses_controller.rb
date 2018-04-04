@@ -5,6 +5,11 @@ class GuessesController < ApplicationController
       @guess = @game.guesses.create(guess_params)
       @game.reload
       if @guess.valid?
+        if @game.letter_in_word?(@guess.letter)
+          flash[:success] = 'Correct guess'
+        else
+          flash[:danger] = 'Incorrect guess'
+        end
         format.html { redirect_to @game }
         format.json { render :show, status: :created, location: @game }
       else
