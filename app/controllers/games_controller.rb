@@ -21,11 +21,10 @@ class GamesController < ApplicationController
   # POST /games
   # POST /games.json
   def create
-    if params[:generate_word]
-      @game = Game.new
-      @game.word = ::RandomWordGenerator.generate_word
-    else
+    if params[:game]
       @game = Game.new(new_game_params)
+    else
+      @game = Game.new word: ::RandomWordGenerator.generate_word
     end
 
     respond_to do |format|
