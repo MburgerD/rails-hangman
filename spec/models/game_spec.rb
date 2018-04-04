@@ -2,85 +2,93 @@ require 'rails_helper'
 
 describe Game do
   describe "validation on Game creation" do
+    let(:word) { "example" }
+    let(:lives) { 5 }
+    let(:game) { Game.new(word: word, lives: lives) }
+
     context "with no word entered" do
-      it "does not save the game" do
-        game = Game.new
-        expect(game.save).to be false
+      let(:word) { "" }
+
+      it "the game is not valid" do
+        expect(game).not_to be_valid
       end
     end
 
     context "with word of length > 20" do
-      it "does not save the game" do
-        word = 'a' * 21
-        game = Game.new word: word
-        expect(game.save).to be false
+      let(:word) { "a" * 21 }
+
+      it "the game is not valid" do
+        expect(game).not_to be_valid
       end
     end
 
     context "with word containing numbers" do
-      it "does not save the game" do
-        word = 'ab3a'
-        game = Game.new word: word
-        expect(game.save).to be false
+      let(:word) { "ab3a" }
+
+      it "the game is not valid" do
+        expect(game).not_to be_valid
       end
     end
 
     context "with word containing symbols" do
-      it "does not save the game" do
-        word = 'ab@a'
-        game = Game.new word: word
-        expect(game.save).to be false
+      let(:word) { "ab@a" }
+
+      it "the game is not valid" do
+        expect(game).not_to be_valid
       end
     end
 
     context "with word of only letters and length 1..20" do
-      it "saves the game" do
-        word = 'a' * 10
-        game = Game.new word: word
-        expect(game.save).to be true
+      let(:word) { "a" * 10 }
+
+      it "the game is valid" do
+        expect(game).to be_valid
       end
     end
 
     context "with lives = 0" do
-      it "does not save the game" do
-        word = 'a' * 10
-        game = Game.new word: word, lives: 0
-        expect(game.save).to be false
+      let(:lives) { 0 }
+
+      it "the game is not valid" do
+        expect(game).not_to be_valid
       end
     end
 
     context "with lives > 10" do
-      it "does not save the game" do
-        word = 'a' * 10
-        game = Game.new word: word, lives: 11
-        expect(game.save).to be false
+      let(:lives) { 11 }
+
+      it "the game is not valid" do
+        expect(game).not_to be_valid
       end
     end
 
     context "with lives in range 1..10" do
-      it "saves the game" do
-        word = 'a' * 10
-        game = Game.new word: word, lives: 7
-        expect(game.save).to be true
+      let(:lives) { 7 }
+
+      it "the game is valid" do
+        expect(game).to be_valid
       end
     end
   end
 
   describe "#remaining_lives" do
     let(:game) { Game.create word: 'foo', lives: 5 }
-    context "with correct letter guessed" do
-      it "has all lives" do
-        game.guesses.create letter: 'f'
 
-        expect(game.remaining_lives).to eq 5
+    context "given a game with 5 lives" do
+      context "with correct letter guessed" do
+        it "has 5 lives remaining" do
+          game.guesses.create! letter: 'f'
+
+          expect(game.remaining_lives).to eq 5
+        end
       end
-    end
 
-    context "with incorrect letter guessed" do
-      it "has one less life" do
-        game.guesses.create letter: 'z'
+      context "with an incorrect letter guessed" do
+        it "has 4 lives remaining" do
+          game.guesses.create! letter: 'z'
 
-        expect(game.remaining_lives).to eq 4
+          expect(game.remaining_lives).to eq 4
+        end
       end
     end
   end
@@ -88,8 +96,8 @@ describe Game do
   describe "#guesses_list" do
     let(:game) { Game.create word: 'foo', lives: 5 }
     before(:each) do
-      game.guesses.create letter: 'a'
-      game.guesses.create letter: 'b'
+      game.guesses.create! letter: 'a'
+      game.guesses.create! letter: 'b'
     end
 
     context "with two existing guesses" do
