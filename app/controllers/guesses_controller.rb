@@ -13,6 +13,7 @@ class GuessesController < ApplicationController
         format.html { redirect_to @game }
         format.json { render :show, status: :created, location: @game }
       else
+        @errors = @guess.errors.full_messages
         format.html { render 'games/show' }
         format.json { render json: @guess.errors, status: :unprocessable_entity }
       end

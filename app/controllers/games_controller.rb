@@ -34,6 +34,7 @@ class GamesController < ApplicationController
         format.html { redirect_to @game }
         format.json { render :show, status: :created, location: @game }
       else
+        @errors = @game.errors.full_messages
         format.html { render :new }
         format.json { render json: @game.errors, status: :unprocessable_entity }
       end

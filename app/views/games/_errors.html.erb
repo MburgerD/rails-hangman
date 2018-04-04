@@ -1,10 +1,10 @@
-<% if object %>
-  <% if object.errors.any? %>
+<% if errors %>
+  <% if errors.any? %>
     <div id="error_explanation">
-      <%= pluralize(object.errors.count, "error") %> prohibited this game from being saved
+      <%= pluralize(errors.count, "error") %> prohibited this game from being saved
 
       <ul>
-      <% object.errors.full_messages.each do |message| %>
+      <% errors.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
