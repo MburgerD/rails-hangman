@@ -8,18 +8,6 @@ class Game < ApplicationRecord
                                     less_than_or_equal_to: 10,
                                     greater_than: 0 }
 
-  def guessed_word
-    ''.tap do |revealed_letters|
-      word.split('').each do |letter|
-        if guesses_list.include? letter.downcase
-          revealed_letters << letter
-        else
-          revealed_letters << '-'
-        end
-      end
-    end
-  end
-
   def guesses_list
     [].tap do |guessed_letters|
       guesses.each { |guess| guessed_letters << guess.letter }
