@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe Guess do
+  let(:game) { Game.new word: 'foo', lives: 5 }
   describe "validation" do
-    let(:game) { Game.new word: 'foo', lives: 5 }
-
     context "with no guess entered" do
       it "does not save the guess" do
         guess = Guess.new game: game
@@ -38,6 +37,13 @@ describe Guess do
         guess = Guess.new game: game, letter: 'a'
         expect(guess.save).to be true
       end
+    end
+  end
+
+  describe "on guess creation" do
+    it "converts the guess to lowercase" do
+      Guess.create game: game, letter: 'A'
+      expect(Guess.last.letter).to eq 'a'
     end
   end
 end
