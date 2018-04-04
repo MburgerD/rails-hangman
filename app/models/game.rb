@@ -39,6 +39,6 @@ class Game < ApplicationRecord
   end
 
   def all_letters_guessed?
-    word.downcase.split('').uniq.length == correct_guesses.length
+    (word.downcase.chars - correct_guesses).empty?
   end
 end
