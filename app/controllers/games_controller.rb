@@ -1,3 +1,5 @@
+require_relative '../services/random_word_generator'
+
 class GamesController < ApplicationController
   before_action :set_game, only: %i[show edit update destroy]
 
@@ -28,7 +30,7 @@ class GamesController < ApplicationController
   def create
     if params[:generate_word]
       @game = Game.new
-      @game.word = @game.random_word
+      @game.word = ::RandomWordGenerator.generate_word
     else
       @game = Game.new(new_game_params)
     end
