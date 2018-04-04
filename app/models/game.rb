@@ -9,9 +9,7 @@ class Game < ApplicationRecord
                                     greater_than: 0 }
 
   def guesses_list
-    [].tap do |guessed_letters|
-      guesses.each { |guess| guessed_letters << guess.letter }
-    end
+    guesses.map(&:letter)
   end
 
   def remaining_lives
