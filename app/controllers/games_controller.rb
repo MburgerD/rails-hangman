@@ -12,12 +12,6 @@ class GamesController < ApplicationController
   # GET /games/1
   # GET /games/1.json
   def show
-    if @game.game_won?
-      flash.now[:success] = 'You won!'
-    elsif @game.game_lost?
-      flash.now[:danger] =
-        "Game lost! The word was <strong><mark>#{@game.word}</mark></strong>"
-    end
   end
 
   # GET /games/new

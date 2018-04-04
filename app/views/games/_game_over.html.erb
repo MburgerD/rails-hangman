@@ -1,0 +1,7 @@
+<% if game.game_won? %>
+  <div class="alert alert-success">You won!</div>
+<% elsif game.game_lost? %>
+  <div class="alert alert-danger">
+    Game lost! The word was <strong><mark><%= game.word %></mark></strong>
+  </div>
+<% end %>
