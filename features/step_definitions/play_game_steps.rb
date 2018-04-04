@@ -24,7 +24,7 @@ When(/^I am on the game show page$/) do
 end
 
 And(/^I enter a guess$/) do
-  fill_in('game[guess]', with: 'a')
+  fill_in('guess[letter]', with: 'a')
 end
 
 Then(/^I click update game$/) do
